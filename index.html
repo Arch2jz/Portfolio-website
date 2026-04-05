@@ -304,7 +304,7 @@
 
                     <!-- Contact Form -->
                     <div class="reveal-right">
-                        <form id="contact-form" class="glass p-8 border border-black/5">
+                        <form id="contact-form" action="https://formspree.io/f/xbdppwdk" method="POST" class="glass p-8 border border-black/5">
                             <div class="space-y-6">
                                 <div class="relative">
                                     <label for="name" class="block text-sm font-light text-gray-500 mb-2">Name</label>
@@ -774,41 +774,11 @@
         // Contact form
         function setupContactForm() {
             const form = document.getElementById('contact-form');
-            const messageDiv = document.getElementById('contact-message');
-            const submitBtn = document.getElementById('submit-btn');
-            const btnText = document.getElementById('btn-text');
-            const btnIcon = document.getElementById('btn-icon');
-
             if (!form) return;
-
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                // Loading state
-                btnText.textContent = 'Sending...';
-                btnIcon.setAttribute('data-lucide', 'loader-2');
-                btnIcon.classList.add('animate-spin');
-                lucide.createIcons();
-                submitBtn.disabled = true;
-
-                // Simulate sending
-                await new Promise(resolve => setTimeout(resolve, 1500));
-
-                // Success state
-                btnText.textContent = 'Send Message';
-                btnIcon.setAttribute('data-lucide', 'send');
-                btnIcon.classList.remove('animate-spin');
-                lucide.createIcons();
-                submitBtn.disabled = false;
-
-                messageDiv.textContent = '✨ Message sent! I\'ll get back to you soon.';
-                messageDiv.classList.remove('hidden', 'text-red-400');
-                messageDiv.classList.add('text-green-400');
-                form.reset();
-
-                setTimeout(() => {
-                    messageDiv.classList.add('hidden');
-                }, 5000);
+            form.addEventListener('submit', () => {
+                const messageDiv = document.getElementById('contact-message');
+                messageDiv.textContent = 'Sending...';
+                messageDiv.classList.remove('hidden');
             });
         }
 
