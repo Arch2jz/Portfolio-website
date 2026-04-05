@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gurnoor's stuff</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom CSS with animations -->
+    <link rel="stylesheet" href="index.css">
+    <!-- Configure Tailwind for custom colors and font -->
+    <style>
+        /* Define Inter font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            overflow-x: hidden;
+        }
+
+        /* Glass morphism effect - light */
+        .glass {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .accent-color {
+            color: #1a1a1a;
+        }
+
+        .section-padding {
+            padding-top: 6rem;
+            padding-bottom: 6rem;
+        }
+
+        /* Hero - clean white */
+        .hero-bg {
+            background: #fafafa;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle grid pattern */
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+    </style>
+    <!-- Lucide icons -->
+    <script type="module" src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="antialiased">
+
+    <!-- Grain texture overlay -->
+    <div class="grain-overlay"></div>
+
+    <!-- Custom cursor -->
+    <div class="custom-cursor hidden md:block" id="custom-cursor"></div>
+    <div class="cursor-dot hidden md:block" id="cursor-dot"></div>
+
+    <!-- Particle canvas -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Primary Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass border-b border-black/5 reveal" style="transition-delay: 0s;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo/Name -->
+                <div class="flex-shrink-0">
+                    <a href="#hero" class="text-2xl font-bold text-gray-900 tracking-tight hover:opacity-70 transition duration-300">
+                        Arch2jz
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#about" class="nav-link text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium transition duration-300 underline-expand">About</a>
+                        <a href="#skills" class="nav-link text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium transition duration-300 underline-expand">Skills</a>
+                        <a href="#projects" class="nav-link text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium transition duration-300 underline-expand">Projects</a>
+                        <a href="#contact" class="nav-link text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium transition duration-300 underline-expand">Contact</a>
+                    </div>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" type="button" class="magnetic-btn inline-flex items-center justify-center p-2 text-gray-600 hover:text-gray-900 focus:outline-none" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <i data-lucide="menu" class="h-6 w-6" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden glass border-t border-black/5" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#about" class="mobile-nav-link block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-black/5 transition">About</a>
+                <a href="#skills" class="mobile-nav-link block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-black/5 transition">Skills</a>
+                <a href="#projects" class="mobile-nav-link block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-black/5 transition">Projects</a>
+                <a href="#contact" class="mobile-nav-link block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-black/5 transition">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10">
+
+        <!-- 1. Hero Section -->
+        <section id="hero" class="hero-bg min-h-screen flex items-center pt-16 rounded-b-3xl relative">
+            <!-- Floating blobs -->
+            <div class="blob absolute top-20 left-10 w-72 h-72 opacity-50 parallax-slow" data-speed="0.05"></div>
+            <div class="blob absolute bottom-20 right-10 w-96 h-96 opacity-30 parallax-slow" data-speed="0.08" style="animation-delay: -4s;"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                <div class="grid lg:grid-cols-12 gap-8 items-center">
+
+                    <!-- Text Content -->
+                    <div class="lg:col-span-8 text-center lg:text-left">
+                        <span class="text-lg font-light text-gray-400 block mb-2 reveal stagger-1" id="hero-greeting">Hello, I'm</span>
+                        <h1 class="text-6xl sm:text-7xl lg:text-8xl font-extralight leading-tight text-gray-900 mb-4 reveal stagger-2">
+                            <span class="inline-block">Gurnoor Singh</span>
+                        </h1>
+                        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-light text-gray-600 mb-8 reveal stagger-3">
+                            <span class="font-mono typing-cursor" id="typewriter-text">Software Engineer</span>
+                        </h2>
+                        <p class="text-lg text-gray-500 max-w-2xl mx-auto lg:mx-0 mb-10 reveal stagger-4" id="hero-description">
+                            I find computers cool
+                        </p>
+                        <div class="flex flex-col sm:flex-row justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4 reveal stagger-5">
+                            <a href="#contact" class="magnetic-btn group inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-gray-900 hover:bg-gray-800 transition duration-300">
+                                Let's Talk
+                            </a>
+                            <a href="#projects" class="magnetic-btn inline-flex items-center justify-center px-8 py-4 text-base font-medium text-gray-900 border border-gray-900 hover:bg-gray-900 hover:text-white transition duration-300">
+                                View Work
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Profile Image -->
+                    <div class="lg:col-span-4 flex justify-center lg:justify-end reveal-right stagger-3">
+                        <div class="relative">
+                            <div class="w-64 h-64 lg:w-80 lg:h-80 rounded-none overflow-hidden bg-gray-100 border border-gray-200 p-1 shadow-lg relative z-10" id="profile-container">
+                                <img src="https://placehold.co/800x800/f5f5f5/666666?text=GS"
+                                     alt="Gurnoor Singh"
+                                     class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-700"
+                                     id="profile-image"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+                <a href="#about" class="text-gray-400 hover:text-gray-900 transition">
+                    <i data-lucide="chevron-down" class="w-6 h-6"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- 2. About Section -->
+        <section id="about" class="section-padding relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <h3 class="text-4xl sm:text-5xl font-light text-center mb-16 reveal">
+                    About
+                </h3>
+
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <!-- About text -->
+                    <div class="reveal-left">
+                        <div class="glass p-8 sm:p-12 rounded-none hover-lift tilt-card border border-black/5">
+                            <div class="tilt-card-content">
+                                <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                                    I like cool technology and building cool stuff. Highly motivated by mechanical keyboards and circuit boards.
+                                </p>
+                                <p class="text-lg text-gray-600 leading-relaxed mb-6">
+                                    I watch anime and read manga if my interest in computers wasn't nerdy enough.
+                                </p>
+                                <div class="flex flex-wrap gap-3 mt-8">
+                                    <span class="px-4 py-2 bg-black/5 border border-black/10 text-gray-700 text-sm">Problem Solver</span>
+                                    <span class="px-4 py-2 bg-black/5 border border-black/10 text-gray-700 text-sm">Tech Enthusiast</span>
+                                    <span class="px-4 py-2 bg-black/5 border border-black/10 text-gray-700 text-sm">Anime Fan</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats/Quick info -->
+                    <div class="grid grid-cols-2 gap-6 reveal-right">
+                        <div class="glass p-6 text-center hover-lift reveal-scale stagger-1 border border-black/5">
+                            <i data-lucide="code-2" class="w-10 h-10 mx-auto mb-3 text-gray-400"></i>
+                            <h4 class="text-3xl font-light text-gray-900 mb-1">∞</h4>
+                            <p class="text-gray-500 text-sm">Lines of Code</p>
+                        </div>
+                        <div class="glass p-6 text-center hover-lift reveal-scale stagger-2 border border-black/5">
+                            <i data-lucide="coffee" class="w-10 h-10 mx-auto mb-3 text-gray-400"></i>
+                            <h4 class="text-3xl font-light text-gray-900 mb-1">∞</h4>
+                            <p class="text-gray-500 text-sm">Cups of Coffee</p>
+                        </div>
+                        <div class="glass p-6 text-center hover-lift reveal-scale stagger-3 border border-black/5">
+                            <i data-lucide="zap" class="w-10 h-10 mx-auto mb-3 text-gray-400"></i>
+                            <h4 class="text-3xl font-light text-gray-900 mb-1">24/7</h4>
+                            <p class="text-gray-500 text-sm">Coding Hours</p>
+                        </div>
+                        <div class="glass p-6 text-center hover-lift reveal-scale stagger-4 border border-black/5">
+                            <i data-lucide="heart" class="w-10 h-10 mx-auto mb-3 text-gray-400"></i>
+                            <h4 class="text-3xl font-light text-gray-900 mb-1">100%</h4>
+                            <p class="text-gray-500 text-sm">Passion</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Skills Section -->
+        <section id="skills" class="section-padding relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h3 class="text-4xl sm:text-5xl font-light text-center mb-16 reveal">
+                    Skills
+                </h3>
+
+                <!-- Skills Grid Container -->
+                <div id="skills-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Skills will be populated here by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Projects Section -->
+        <section id="projects" class="section-padding relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <h3 class="text-4xl sm:text-5xl font-light text-center mb-16 reveal">
+                    Projects
+                </h3>
+
+                <!-- Projects Grid Container -->
+                <div id="projects-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Project cards will be populated here by JavaScript -->
+                </div>
+
+                <div class="mt-16 text-center reveal">
+                    <a href="https://github.com" target="_blank" class="magnetic-btn inline-flex items-center px-8 py-4 text-base font-medium text-gray-900 bg-gray-100 border border-gray-200 hover:bg-gray-900 hover:text-white transition duration-300">
+                        See More on GitHub
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Contact Section -->
+        <section id="contact" class="section-padding relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h3 class="text-4xl sm:text-5xl font-light text-center mb-16 reveal">
+                    Contact
+                </h3>
+
+                <div class="grid lg:grid-cols-2 gap-12 max-w-4xl mx-auto">
+                    <!-- Contact Info -->
+                    <div class="reveal-left">
+                        <div class="glass p-8 h-full border border-black/5">
+                            <h4 class="text-2xl font-light text-gray-900 mb-6">Let's work together</h4>
+                            <p class="text-gray-600 mb-8">
+                                Have a project in mind or just want to chat? I'm always open to interesting conversations.
+                            </p>
+
+                            <div class="space-y-6">
+                                <div class="flex items-center space-x-4 group">
+                                    <div class="w-10 h-10 flex items-center justify-center text-gray-400">
+                                        <i data-lucide="mail" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-400">Email</p>
+                                    <p class="text-gray-900">gurnoorskullz@gmail.com</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Social Links -->
+                            <div class="flex space-x-4 mt-8">
+                                <a href="#" class="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-900 transition duration-300">
+                                    <i data-lucide="github" class="w-5 h-5"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-900 transition duration-300">
+                                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-900 transition duration-300">
+                                    <i data-lucide="twitter" class="w-5 h-5"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="reveal-right">
+                        <form id="contact-form" class="glass p-8 border border-black/5">
+                            <div class="space-y-6">
+                                <div class="relative">
+                                    <label for="name" class="block text-sm font-light text-gray-500 mb-2">Name</label>
+                                    <input type="text" id="name" name="name" required
+                                        class="w-full px-4 py-3 bg-white border border-gray-200 text-gray-900 focus:border-gray-400 transition outline-none"
+                                        placeholder="Your Name">
+                                </div>
+                                <div class="relative">
+                                    <label for="email" class="block text-sm font-light text-gray-500 mb-2">Email</label>
+                                    <input type="email" id="email" name="email" required
+                                        class="w-full px-4 py-3 bg-white border border-gray-200 text-gray-900 focus:border-gray-400 transition outline-none"
+                                        placeholder="your@email.com">
+                                </div>
+                                <div class="relative">
+                                    <label for="message" class="block text-sm font-light text-gray-500 mb-2">Message</label>
+                                    <textarea id="message" name="message" rows="5" required
+                                        class="w-full px-4 py-3 bg-white border border-gray-200 text-gray-900 focus:border-gray-400 transition outline-none resize-none"
+                                        placeholder="Tell me about your project..."></textarea>
+                                </div>
+
+                                <button type="submit" id="submit-btn"
+                                    class="magnetic-btn w-full py-4 text-base font-medium text-white bg-gray-900 hover:bg-gray-800 transition duration-300 flex items-center justify-center">
+                                    <span id="btn-text">Send Message</span>
+                                    <i data-lucide="send" class="w-4 h-4 ml-2" id="btn-icon"></i>
+                                </button>
+
+                                <div id="contact-message" class="text-center font-medium hidden"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-16 glass border-t border-black/5 py-12 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <a href="#hero" class="text-xl font-light text-gray-900 tracking-tight hover:opacity-70 transition">
+                        Arch2jz
+                    </a>
+                    <p class="text-gray-500 text-sm mt-2">Built with passion</p>
+                </div>
+
+                <div class="flex justify-center space-x-6 mb-4 md:mb-0">
+                    <a href="#" class="text-gray-400 hover:text-gray-900 transition duration-300">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gray-900 transition duration-300">
+                        <i data-lucide="linkedin" class="w-5 h-5"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gray-900 transition duration-300">
+                        <i data-lucide="twitter" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="border-t border-black/5 mt-8 pt-8 text-center">
+                <p class="text-gray-400 text-sm">
+                    © <span id="year"></span> Gurnoor Singh
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // DATA
+        // ============================================
+        const SKILLS = [
+            { name: "C", icon: "file-code" },
+            { name: "C++", icon: "terminal" },
+            { name: "Python", icon: "code-2" },
+            { name: "Git", icon: "git-branch" },
+        ];
+
+        const PROJECTS = [
+            {
+                title: "E-Commerce Platform",
+                description: "Full-stack overhaul with microservices architecture. Improved performance by 40% with modern React patterns.",
+                tags: ["React", "Node.js", "MongoDB"],
+                image_url: "https://placehold.co/600x400/1f2937/06b6d4?text=E-COMMERCE",
+                link: "#",
+                github: "#"
+            },
+            {
+                title: "Real-Time Chat App",
+                description: "Secure messaging platform with WebSockets. Features end-to-end encryption and real-time notifications.",
+                tags: ["TypeScript", "WebSockets", "PostgreSQL"],
+                image_url: "https://placehold.co/600x400/1f2937/8b5cf6?text=CHAT+APP",
+                link: "#",
+                github: "#"
+            },
+            {
+                title: "AI Content Generator",
+                description: "AI-powered tool for generating marketing copy. Integrated with LLM APIs for smart content creation.",
+                tags: ["Python", "FastAPI", "OpenAI"],
+                image_url: "https://placehold.co/600x400/1f2937/ec4899?text=AI+TOOL",
+                link: "#",
+                github: "#"
+            },
+            {
+                title: "Portfolio Website",
+                description: "This very website! Built with vanilla HTML, CSS animations, and vanilla JavaScript for maximum performance.",
+                tags: ["HTML", "CSS", "JavaScript"],
+                image_url: "https://placehold.co/600x400/1f2937/06b6d4?text=PORTFOLIO",
+                link: "#",
+                github: "#"
+            },
+            {
+                title: "Task Management System",
+                description: "Collaborative task manager with real-time updates, drag-drop interface, and team collaboration features.",
+                tags: ["React", "Firebase", "Tailwind"],
+                image_url: "https://placehold.co/600x400/1f2937/10b981?text=TASKS",
+                link: "#",
+                github: "#"
+            },
+            {
+                title: "Weather Dashboard",
+                description: "Beautiful weather visualization with location-based forecasts, interactive maps, and historical data.",
+                tags: ["JavaScript", "API", "Chart.js"],
+                image_url: "https://placehold.co/600x400/1f2937/f59e0b?text=WEATHER",
+                link: "#",
+                github: "#"
+            },
+        ];
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        const getIconHtml = (name, className = "w-6 h-6") => {
+            return `<i data-lucide="${name}" class="${className}"></i>`;
+        };
+
+        // ============================================
+        // RENDER FUNCTIONS
+        // ============================================
+        function renderSkills() {
+            const container = document.getElementById('skills-container');
+            if (!container) return;
+
+            container.innerHTML = SKILLS.map((skill, index) => `
+                <div class="skill-card glass p-8 hover-lift tilt-card reveal-scale stagger-${(index % 4) + 1} border border-black/5">
+                    <div class="tilt-card-content text-center">
+                        <div class="w-12 h-12 flex items-center justify-center mx-auto mb-4 text-gray-500">
+                            ${getIconHtml(skill.icon, "w-8 h-8")}
+                        </div>
+                        <h4 class="text-lg font-light text-gray-900 tracking-wide">${skill.name}</h4>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function renderProjects() {
+            const container = document.getElementById('projects-container');
+            if (!container) return;
+
+            container.innerHTML = PROJECTS.map((project, index) => `
+                <div class="project-card glass overflow-hidden hover-lift tilt-card reveal-scale stagger-${(index % 6) + 1} border border-black/5">
+                    <div class="img-zoom h-48 overflow-hidden bg-gray-100">
+                        <img src="${project.image_url}" alt="${project.title}" class="w-full h-full object-cover opacity-90">
+                    </div>
+                    <div class="p-6 tilt-card-content">
+                        <h4 class="text-lg font-medium text-gray-900 mb-2">${project.title}</h4>
+                        <p class="text-gray-600 mb-4 text-sm line-clamp-2">${project.description}</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            ${project.tags.map(tag => `<span class="text-xs text-gray-600 bg-gray-100 px-3 py-1">${tag}</span>`).join('')}
+                        </div>
+                        <div class="flex space-x-4 pt-4 border-t border-black/5">
+                            <a href="${project.link}" class="flex-1 text-center py-2 text-gray-500 hover:text-gray-900 transition text-sm">
+                                ${getIconHtml('external-link', 'w-4 h-4 inline mr-1')} Live
+                            </a>
+                            <a href="${project.github}" class="flex-1 text-center py-2 text-gray-500 hover:text-gray-900 transition text-sm">
+                                ${getIconHtml('github', 'w-4 h-4 inline mr-1')} Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        // ============================================
+        // INTERACTIVE EFFECTS
+        // ============================================
+
+        // Mobile menu toggle
+        function setupNavigation() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    const isHidden = mobileMenu.classList.contains('hidden');
+                    mobileMenu.classList.toggle('hidden');
+
+                    const icon = mobileMenuButton.querySelector('i');
+                    if (icon) {
+                        icon.setAttribute('data-lucide', isHidden ? 'x' : 'menu');
+                        lucide.createIcons();
+                    }
+                });
+
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        const icon = mobileMenuButton.querySelector('i');
+                        if (icon) {
+                            icon.setAttribute('data-lucide', 'menu');
+                            lucide.createIcons();
+                        }
+                    });
+                });
+            }
+        }
+
+        // Scroll reveal animation
+        function setupScrollReveal() {
+            const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+        }
+
+        // 3D Tilt effect on cards
+        function setupTiltEffect() {
+            const cards = document.querySelectorAll('.tilt-card');
+
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+
+                    const rotateX = (y - centerY) / 10;
+                    const rotateY = (centerX - x) / 10;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+                });
+            });
+        }
+
+        // Magnetic button effect
+        function setupMagneticButtons() {
+            const buttons = document.querySelectorAll('.magnetic-btn');
+
+            buttons.forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+
+                    btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) scale(1.05)`;
+                });
+
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'translate(0, 0) scale(1)';
+                });
+            });
+        }
+
+        // Custom cursor
+        function setupCustomCursor() {
+            const cursor = document.getElementById('custom-cursor');
+            const cursorDot = document.getElementById('cursor-dot');
+
+            if (!cursor || !cursorDot || window.matchMedia('(pointer: coarse)').matches) return;
+
+            let mouseX = 0, mouseY = 0;
+            let cursorX = 0, cursorY = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                cursorDot.style.left = mouseX + 'px';
+                cursorDot.style.top = mouseY + 'px';
+            });
+
+            // Smooth cursor follow
+            function animateCursor() {
+                cursorX += (mouseX - cursorX) * 0.1;
+                cursorY += (mouseY - cursorY) * 0.1;
+                cursor.style.left = cursorX + 'px';
+                cursor.style.top = cursorY + 'px';
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+
+            // Hover states
+            const hoverElements = document.querySelectorAll('a, button, .tilt-card, input, textarea');
+            hoverElements.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            });
+        }
+
+        // Particle system - light mode
+        function setupParticles() {
+            const canvas = document.getElementById('particles-canvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let animationId;
+            let isActive = true;
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.size = Math.random() * 2 + 1;
+                    this.opacity = Math.random() * 0.3 + 0.1;
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(0, 0, 0, ${this.opacity})`;
+                    ctx.fill();
+                }
+            }
+
+            // Create particles
+            const particleCount = Math.min(40, Math.floor((canvas.width * canvas.height) / 30000));
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+
+            function animate() {
+                if (!isActive) return;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Update and draw particles
+                particles.forEach(particle => {
+                    particle.update();
+                    particle.draw();
+                });
+
+                // Draw connections
+                particles.forEach((p1, i) => {
+                    particles.slice(i + 1).forEach(p2 => {
+                        const dx = p1.x - p2.x;
+                        const dy = p1.y - p2.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < 100) {
+                            ctx.beginPath();
+                            ctx.moveTo(p1.x, p1.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = `rgba(0, 0, 0, ${0.1 * (1 - distance / 100)})`;
+                            ctx.stroke();
+                        }
+                    });
+                });
+
+                animationId = requestAnimationFrame(animate);
+            }
+
+            animate();
+
+            // Pause when tab is hidden
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    isActive = false;
+                    cancelAnimationFrame(animationId);
+                } else {
+                    isActive = true;
+                    animate();
+                }
+            });
+        }
+
+        // Typewriter effect
+        function typewriterEffect() {
+            const element = document.getElementById('typewriter-text');
+            if (!element) return;
+
+            const texts = ['<Software Engineer>', '<Problem Solver>', '<Tech Enthusiast>', '<Keyboard Warrior>'];
+            let textIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function type() {
+                const currentText = texts[textIndex];
+
+                if (isDeleting) {
+                    element.textContent = currentText.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    element.textContent = currentText.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+
+                let typeSpeed = isDeleting ? 50 : 100;
+
+                if (!isDeleting && charIndex === currentText.length) {
+                    typeSpeed = 2000;
+                    isDeleting = true;
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    textIndex = (textIndex + 1) % texts.length;
+                    typeSpeed = 500;
+                }
+
+                setTimeout(type, typeSpeed);
+            }
+
+            type();
+        }
+
+        // Parallax effect
+        function setupParallax() {
+            const parallaxElements = document.querySelectorAll('.parallax-slow');
+
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+
+                parallaxElements.forEach(el => {
+                    const speed = parseFloat(el.dataset.speed) || 0.05;
+                    el.style.transform = `translateY(${scrolled * speed}px)`;
+                });
+            });
+        }
+
+        // Contact form
+        function setupContactForm() {
+            const form = document.getElementById('contact-form');
+            const messageDiv = document.getElementById('contact-message');
+            const submitBtn = document.getElementById('submit-btn');
+            const btnText = document.getElementById('btn-text');
+            const btnIcon = document.getElementById('btn-icon');
+
+            if (!form) return;
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Loading state
+                btnText.textContent = 'Sending...';
+                btnIcon.setAttribute('data-lucide', 'loader-2');
+                btnIcon.classList.add('animate-spin');
+                lucide.createIcons();
+                submitBtn.disabled = true;
+
+                // Simulate sending
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Success state
+                btnText.textContent = 'Send Message';
+                btnIcon.setAttribute('data-lucide', 'send');
+                btnIcon.classList.remove('animate-spin');
+                lucide.createIcons();
+                submitBtn.disabled = false;
+
+                messageDiv.textContent = '✨ Message sent! I\'ll get back to you soon.';
+                messageDiv.classList.remove('hidden', 'text-red-400');
+                messageDiv.classList.add('text-green-400');
+                form.reset();
+
+                setTimeout(() => {
+                    messageDiv.classList.add('hidden');
+                }, 5000);
+            });
+        }
+
+        // Text scramble effect for greeting
+        function textScramble(element, finalText) {
+            const chars = '!<>-_\\/[]{}—=+*^?#________';
+            let frame = 0;
+
+            const update = () => {
+                let output = '';
+                const progress = frame / 20;
+
+                for (let i = 0; i < finalText.length; i++) {
+                    if (i < Math.floor(progress * finalText.length)) {
+                        output += finalText[i];
+                    } else {
+                        output += chars[Math.floor(Math.random() * chars.length)];
+                    }
+                }
+
+                element.textContent = output;
+                frame++;
+
+                if (frame <= 20) {
+                    requestAnimationFrame(update);
+                } else {
+                    element.textContent = finalText;
+                }
+            };
+
+            update();
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            renderSkills();
+            renderProjects();
+            setupNavigation();
+            setupScrollReveal();
+            setupTiltEffect();
+            setupMagneticButtons();
+            setupCustomCursor();
+            setupParticles();
+            typewriterEffect();
+            setupParallax();
+            setupContactForm();
+
+            // Set year
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Scramble greeting
+            const greeting = document.getElementById('hero-greeting');
+            if (greeting) {
+                textScramble(greeting, "Hello, I'm");
+            }
+        });
+    </script>
+
+</body>
+</html>
