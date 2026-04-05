@@ -304,7 +304,7 @@
 
                     <!-- Contact Form -->
                     <div class="reveal-right">
-                        <form id="contact-form" action="https://formspree.io/f/xbdppwdk" method="POST" class="glass p-8 border border-black/5">
+                        <form id="contact-form" class="glass p-8 border border-black/5">
                             <div class="space-y-6">
                                 <div class="relative">
                                     <label for="name" class="block text-sm font-light text-gray-500 mb-2">Name</label>
@@ -775,10 +775,21 @@
         function setupContactForm() {
             const form = document.getElementById('contact-form');
             if (!form) return;
-            form.addEventListener('submit', () => {
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
                 const messageDiv = document.getElementById('contact-message');
                 messageDiv.textContent = 'Sending...';
                 messageDiv.classList.remove('hidden');
+
+                emailjs.sendForm('service_0x0au5b', 'template_thp2pb8', this)
+                    .then(() => {
+                        messageDiv.textContent = 'Message sent successfully 🚀';
+                    }, (error) => {
+                        messageDiv.textContent = 'Failed to send 💀';
+                        console.error(error);
+                    });
             });
         }
 
@@ -837,5 +848,12 @@
         });
     </script>
 
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+    emailjs.init("-nga561F4gHourp6_");
+})();
+</script>
 </body>
 </html>
